@@ -22,7 +22,5 @@ class OrderProducer implements OrderService {
     public void sendOrder(Order order) {
         log.info("Sending message to topic {}", orderTopicName);
         kafkaTemplate.send(orderTopicName, "my test message");
-        log.info("Sending message to topic {}", "baeldung");
-        kafkaTemplate.send("baeldung", "my test message");
     }
 }
