@@ -1,4 +1,16 @@
 package com.example.ordermessage.order.domain;
 
-public record Order (String item, String count){
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.Getter;
+import lombok.ToString;
+
+@ToString
+@Data
+@Getter
+@AllArgsConstructor
+public class Order {
+
+    private String item;
+    private String count;
 }

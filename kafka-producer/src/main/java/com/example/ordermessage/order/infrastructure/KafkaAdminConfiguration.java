@@ -11,7 +11,8 @@ import org.springframework.kafka.core.KafkaAdmin;
 import java.util.HashMap;
 import java.util.Map;
 
-@Configuration
+//creating topic in docker compose
+//@Configuration
 @Slf4j
 public class KafkaAdminConfiguration {
 

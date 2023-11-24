@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 class OrderProducer implements OrderService {
 
-    @Value("${kafka.order.topic.name}")
+    @Value("${kafka.topic-name}")
     private String orderTopicName;
 
     private final KafkaTemplate kafkaTemplate;
@@ -21,6 +21,15 @@ class OrderProducer implements OrderService {
     @Override
     public void sendOrder(Order order) {
         log.info("Sending message to topic {}", orderTopicName);
-        kafkaTemplate.send(orderTopicName, "my test message");
+        try {
+            OrderEvent event = OrderEvent.builder()
+                    .count(order.getCount())
+                    .item(order.getItem())
+                    .build();
+            kafkaTemplate.send(orderTopicName, event);
+            log.info("Message sent {}", event);
+        } catch (Exception e) {
+            log.error("Error sending message to the broker ", e);
+        }
     }
 }

@@ -3,14 +3,10 @@ spring:
     bootstrap-servers: localhost:9093
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: com.example.ordermessage.order.infrastructure.OrderEventSerializer
 
 kafka:
-  order:
-    topic:
-#      todo change name
-      name: "test_topic"
-      partition:
-        number: 1
-      replication:
-        factor: 1
+  topic-name: "order_topic"
+
+server:
+  port: 8081
