@@ -8,7 +8,8 @@ spring:
 kafka:
   order:
     topic:
-      name: "order"
+#      todo change name
+      name: "test_topic"
       partition:
         number: 1
       replication:
