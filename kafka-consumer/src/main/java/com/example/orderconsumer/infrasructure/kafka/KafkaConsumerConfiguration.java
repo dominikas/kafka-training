@@ -1,4 +1,4 @@
-package com.example.orderconsumer.infrasructure;
+package com.example.orderconsumer.infrasructure.kafka;
 
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
@@ -20,6 +20,8 @@ import java.util.Map;
 @Configuration
 class KafkaConsumerConfiguration {
 
+    private static final String AUTO_OFFSET_RESET_EARLIEST = "earliest";
+
     @Value("${spring.kafka.bootstrap-servers}")
     private String bootstrapServersAddress;
 
@@ -40,7 +42,7 @@ class KafkaConsumerConfiguration {
         properties.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, keyDeserializer);
         properties.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, valueDeserializer);
         properties.put(ErrorHandlingDeserializer.VALUE_DESERIALIZER_CLASS, JsonDeserializer.class.getName());
-        properties.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
+        properties.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, AUTO_OFFSET_RESET_EARLIEST);
         return new DefaultKafkaConsumerFactory<>(properties);
     }
 

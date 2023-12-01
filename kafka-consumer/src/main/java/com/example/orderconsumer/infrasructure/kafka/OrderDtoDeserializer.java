@@ -1,4 +1,4 @@
-package com.example.orderconsumer.infrasructure;
+package com.example.orderconsumer.infrasructure.kafka;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -30,7 +30,6 @@ public class OrderDtoDeserializer implements Deserializer<OrderDto> {
                 log.info("Null received at deserializing");
                 return null;
             }
-            log.info("Deserializing {}", new String(data, "UTF-8"));
             return objectMapper.readValue(new String(data, "UTF-8"), OrderDto.class);
         } catch (Exception e) {
             log.error("Error when serializing OrderDto to byte[]");

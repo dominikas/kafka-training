@@ -1,4 +1,4 @@
-package com.example.orderconsumer.infrasructure;
+package com.example.orderconsumer.infrasructure.kafka;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -14,7 +14,6 @@ class KafkaOrderListener {
 
     @KafkaListener(topicPartitions = @TopicPartition(topic = "${kafka.topic-name}", partitions = {"0"}))
     public void consumeOrder(@Payload OrderDto message) {
-        //todo check deserialization errors
         log.info("Message received {}", message);
     }
 }

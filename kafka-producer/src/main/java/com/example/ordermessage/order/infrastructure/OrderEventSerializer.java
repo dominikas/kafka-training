@@ -20,7 +20,6 @@ public class OrderEventSerializer implements Serializer<OrderEvent> {
                 log.info("Null received at serializing");
                 return null;
             }
-            log.info("Serializing");
             return objectMapper.writeValueAsBytes(orderEvent);
         } catch (Exception e) {
             log.error("Exception when serializing ");

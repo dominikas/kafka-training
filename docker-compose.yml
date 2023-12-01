@@ -22,6 +22,20 @@ services:
       KAFKA_CREATE_TOPICS: "order_topic:1:1"
     networks:
       - kafka-net
+  postgres:
+    image: postgres:10.5
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    logging:
+      options:
+        max-size: 10m
+        max-file: "3"
+    ports:
+      - '5438:5432'
+    volumes:
+      - "./scripts/schema.sql:/docker-entrypoint-initdb.d/1.sql"
 networks:
   kafka-net:
     driver: bridge

@@ -1,4 +1,4 @@
-package com.example.orderconsumer.infrasructure;
+package com.example.orderconsumer.infrasructure.kafka;
 
 import com.example.orderconsumer.domain.Order;
 import com.example.orderconsumer.domain.OrderService;
