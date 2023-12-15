@@ -12,7 +12,7 @@ class OrderDto {
     private String count;
 
     public Order toOrder(){
-        return new Order(item, count);
+        return new Order(item, Integer.parseInt(count));
     }
 }
 

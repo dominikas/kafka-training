@@ -17,8 +17,9 @@ public class OrderPersistence implements OrderRepository {
     @Override
     @Transactional
     public void saveOrder(Order o) {
-        OrderEntity orderEntity = new OrderEntity();
-        log.info("Saving order to database {}", orderEntity);
+        OrderEntity orderEntity = OrderMapper.toEntity(o);
+        log.info("Saving order to database - start {}", orderEntity);
         orderSqlRepository.save(orderEntity);
+        log.info("Saving order to database - success {}", orderEntity);
     }
 }
