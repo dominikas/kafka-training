@@ -51,6 +51,7 @@ class KafkaConsumerConfiguration {
         ConcurrentKafkaListenerContainerFactory<String, OrderDto> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory());
         factory.setCommonErrorHandler(new DefaultErrorHandler(new FixedBackOff(1000L, 1L)));
+        factory.getContainerProperties().setObservationEnabled(true);
         return factory;
     }
 }

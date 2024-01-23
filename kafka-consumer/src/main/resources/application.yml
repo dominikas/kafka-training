@@ -1,4 +1,9 @@
+server:
+  port: 8085
+
 spring:
+  application:
+    name: kafka-consumer
   kafka:
     bootstrap-servers: localhost:9093
     consumer:
@@ -7,6 +12,7 @@ spring:
       properties:
         spring.deserializer.value.delegate.class: org.springframework.kafka.support.serializer.JsonDeserializer
   datasource:
+    name: customer-database
     url: jdbc:postgresql://localhost:5438/postgres
     username: postgres
     password: postgres
@@ -19,7 +25,30 @@ spring:
       hibernate:
         format_sql: true
         dialect: org.hibernate.dialect.PostgreSQLDialect
+        generate_statistics: true
 kafka:
   consumer-group-id: kafka-training-consumer
   topic-name: "order_topic"
+
+logging:
+  pattern:
+    level: '%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]'
+  include-application-name: false
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+  metrics:
+    data:
+      repository:
+        autotime:
+          enabled: true
+  datadog:
+    metrics:
+      export:
+        enabled: false
+  otlp:
+    metrics:
+      export:
+        enabled: false
 

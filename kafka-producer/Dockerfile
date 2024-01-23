@@ -6,7 +6,7 @@ COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 WORKDIR /microservice/
 
-EXPOSE 8081
+EXPOSE 8080
 ENV microservice_name=kafka-producer
 
-ENTRYPOINT ["/entrypoint.sh"]
+ENTRYPOINT ["java", "-jar", "kafka-producer.jar"]
