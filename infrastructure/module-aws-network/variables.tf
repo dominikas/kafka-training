@@ -11,6 +11,9 @@ variable "vpc_name" {
 variable "main_vpc_cidr" {
   type = string
 }
+variable "cluster_name" {
+  type = string
+}
 variable "public_subnet_a_cidr" {
   type = string
 }

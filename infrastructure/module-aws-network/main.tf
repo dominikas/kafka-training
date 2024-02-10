@@ -9,7 +9,7 @@ locals {
 
 resource "aws_vpc" "main" {
   cidr_block = var.main_vpc_cidr
-  tas = {
+  tags = {
     "Name" = local.vpc_name,
     "kubernetes.io/cluster/${local.cluster_name}" = "shared",
   }
@@ -23,7 +23,7 @@ data "aws_availability_zones" "available" {
 resource "aws_subnet" "public-subnet-a" {
   vpc_id = aws_vpc.main.id
   cidr_block = var.public_subnet_a_cidr
-  availability_zone = data.aws_availability_zones.names[0]
+  availability_zone = data.aws_availability_zones.available.names[0]
   tags = {
     "Name" = (
     "${local.vpc_name}-public-subnet-a"
@@ -35,7 +35,7 @@ resource "aws_subnet" "public-subnet-a" {
 resource "aws_subnet" "public-subnet-b" {
   vpc_id = aws_vpc.main.id
   cidr_block = var.public_subnet_b_cidr
-  availability_zone = data.aws_availability_zones.names[1]
+  availability_zone = data.aws_availability_zones.available.names[0]
   tags = {
     "Name" = (
     "${local.vpc_name}-public-subnet-b"
@@ -48,7 +48,7 @@ resource "aws_subnet" "public-subnet-b" {
 resource "aws_subnet" "private-subnet-a" {
   vpc_id = aws_vpc.main.id
   cidr_block = var.private_subnet_a_cidr
-  availability_zone = data.aws_availability_zones.names[0]
+  availability_zone = data.aws_availability_zones.available.names[0]
   tags = {
     "Name" = (
     "${local.vpc_name}-private-subnet-a"
@@ -61,7 +61,7 @@ resource "aws_subnet" "private-subnet-a" {
 resource "aws_subnet" "private-subnet-b" {
   vpc_id = aws_vpc.main.id
   cidr_block = var.private_subnet_b_cidr
-  availability_zone = data.aws_availability_zones.names[1]
+  availability_zone = data.aws_availability_zones.available.names[1]
   tags = {
     "Name" = (
     "${local.vpc_name}-private-subnet-b"
@@ -91,12 +91,12 @@ resource "aws_route_table" "public-route" {
 }
 
 resource "aws_route_table_association" "public-a-association" {
-  subnet_id = aws_subnet.private-subnet-a.id
+  subnet_id = aws_subnet.public-subnet-a.id
   route_table_id = aws_route_table.public-route.id
 }
 
 resource "aws_route_table_association" "public-b-association" {
-  subnet_id = aws_subnet.private-subnet-b.id
+  subnet_id = aws_subnet.public-subnet-b.id
   route_table_id = aws_route_table.public-route.id
 }
 
@@ -116,7 +116,7 @@ resource "aws_eip" "nat-b" {
 }
 
 resource "aws_nat_gateway" "nat-gw-a" {
-  allocation_id = aws_eip.nat-a
+  allocation_id = aws_eip.nat-a.id
   subnet_id = aws_subnet.public-subnet-a.id
   depends_on = [
     aws_internet_gateway.igw]
@@ -126,7 +126,7 @@ resource "aws_nat_gateway" "nat-gw-a" {
 }
 
 resource "aws_nat_gateway" "nat-gw-b" {
-  allocation_id = aws_eip.nat-b
+  allocation_id = aws_eip.nat-b.id
   subnet_id = aws_subnet.public-subnet-b.id
   depends_on = [
     aws_internet_gateway.igw]

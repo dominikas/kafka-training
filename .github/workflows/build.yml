@@ -1,9 +1,14 @@
 name: Sandbox Environment Build
 
 on:
-  create:
-    tags:
-      - v*
+  push:
+    branches:
+      - main
+
+defaults:
+  run:
+    working-directory: ./infrastructure/env-sandbox
+
 jobs:
   build:
     runs-on: ubuntu-latest
