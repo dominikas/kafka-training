@@ -122,32 +122,31 @@ resource "aws_eks_node_group" "ms-node-group" {
 # create a kubeconfig file
 
 resource "local_file" "kubeconfig" {
-  content = <<KUBECONFIG_END
+  content  = <<KUBECONFIG
 apiVersion: v1
 clusters:
 - cluster:
-"certificate-authority-data: >
-${aws_eks_cluster.ms-up-running.certificate_authority.0.data}"
-server: ${aws_eks_cluster.ms-up-running.endpoint}
-name: ${aws_eks_cluster.ms-up-running.arn}
+    certificate-authority-data: ${aws_eks_cluster.ms-up-running.certificate_authority.0.data}
+    server: ${aws_eks_cluster.ms-up-running.endpoint}
+  name: ${aws_eks_cluster.ms-up-running.arn}
 contexts:
 - context:
-cluster: ${aws_eks_cluster.ms-up-running.arn}
-user: ${aws_eks_cluster.ms-up-running.arn}
-name: ${aws_eks_cluster.ms-up-running.arn}
+    cluster: ${aws_eks_cluster.ms-up-running.arn}
+    user: ${aws_eks_cluster.ms-up-running.arn}
+  name: ${aws_eks_cluster.ms-up-running.arn}
 current-context: ${aws_eks_cluster.ms-up-running.arn}
 kind: Config
 preferences: {}
 users:
 - name: ${aws_eks_cluster.ms-up-running.arn}
-user:
-exec:
-apiVersion: client.authentication.k8s.io/v1alpha1
-command: aws-iam-authenticator
-args:
-- "token"
-- "-i"
-- "${aws_eks_cluster.ms-up-running.name}"
-KUBECONFIG_END
+  user:
+    exec:
+      apiVersion: client.authentication.k8s.io/v1alpha1
+      command: aws-iam-authenticator
+      args:
+        - "token"
+        - "-i"
+        - "${aws_eks_cluster.ms-up-running.name}"
+    KUBECONFIG
   filename = "kubeconfig"
 }

@@ -4,6 +4,21 @@ terraform {
     key    = "terraform/backend"
     region = "eu-west-1"
   }
+
+  required_version = ">= 1.0.0"
+
+  required_providers {
+    kubernetes = {
+      source  = "hashicorp/kubernetes"
+      version = "2.16.1"
+    }
+
+    helm = {
+      source  = "hashicorp/helm"
+      version = "= 2.5.1"
+    }
+
+  }
 }
 
 # Network configuration
@@ -45,3 +60,11 @@ module "aws-eks" {
 }
 
 # GitOps Config
+module "argo-cd-server" {
+  source = "github.com/dominikas/kafka-training/infrastructure/module-argo-cd"
+  kubernetes_cluster_id = module.aws-eks.eks_cluster_id
+  kubernetes_cluster_name = module.aws-eks.eks_cluster_name
+  kubernetes_cluster_cert_data = module.aws-eks.eks_cluster_certificate_data
+  kubernetes_cluster_endpoint = module.aws-eks.eks_cluster_endpoint
+  eks_nodegroup_id = module.aws-eks.eks_cluster_nodegroup_id
+}
