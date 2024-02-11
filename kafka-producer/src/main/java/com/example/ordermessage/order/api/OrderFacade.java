@@ -2,6 +2,8 @@ package com.example.ordermessage.order.api;
 
 import com.example.ordermessage.order.domain.Order;
 import com.example.ordermessage.order.domain.OrderService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,17 +18,18 @@ import org.springframework.web.client.RestTemplate;
 @RequestMapping(path = "/v1/order", produces = MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
 @Slf4j
-class OrderFascade {
+@Tag(name = "Producer order endpoint")
+class OrderFacade {
 
     private final OrderService orderService;
 
     private final RestTemplate restTemplate;
 
     @PostMapping
+    @Operation(summary = "Post order")
     public void order(@RequestBody @Valid OrderDto orderDto) {
         log.info("Request is here " + orderDto);
         Order order = new Order(orderDto.getItem(), orderDto.getCount());
-        log.info("TESSSSSSSST");
         restTemplate.getForEntity("http://localhost:8085/v1/order", String.class);
         orderService.sendOrder(order);
     }
