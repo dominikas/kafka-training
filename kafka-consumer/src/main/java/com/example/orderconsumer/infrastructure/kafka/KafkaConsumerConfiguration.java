@@ -1,4 +1,4 @@
-package com.example.orderconsumer.infrasructure.kafka;
+package com.example.orderconsumer.infrastructure.kafka;
 
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import org.apache.kafka.clients.consumer.ConsumerConfig;

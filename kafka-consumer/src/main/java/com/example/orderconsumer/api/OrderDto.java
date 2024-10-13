@@ -1,20 +1,12 @@
 package com.example.orderconsumer.api;
 
 import com.example.orderconsumer.domain.Order;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.ToString;
 
-@Data
-@ToString
-@AllArgsConstructor
-class OrderDto {
+public record OrderDto(String name,
+                       Integer number) {
 
-    private String item;
-    private String count;
-
-    public Order toOrder(){
-        return new Order(item, Integer.parseInt(count));
+    Order toDomain() {
+        return new Order(name, number);
     }
 }
 
