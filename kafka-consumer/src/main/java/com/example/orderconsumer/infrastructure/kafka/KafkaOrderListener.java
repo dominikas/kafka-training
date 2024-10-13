@@ -1,4 +1,4 @@
-package com.example.orderconsumer.infrasructure.kafka;
+package com.example.orderconsumer.infrastructure.kafka;
 
 import com.example.orderconsumer.domain.Order;
 import lombok.RequiredArgsConstructor;

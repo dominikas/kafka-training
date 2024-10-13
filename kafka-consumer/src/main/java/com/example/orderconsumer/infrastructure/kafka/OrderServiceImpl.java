@@ -1,11 +1,13 @@
-package com.example.orderconsumer.infrasructure.kafka;
+package com.example.orderconsumer.infrastructure.kafka;
 
 import com.example.orderconsumer.domain.Order;
 import com.example.orderconsumer.domain.OrderService;
-import com.example.orderconsumer.infrasructure.persistence.OrderPersistence;
+import com.example.orderconsumer.infrastructure.persistence.OrderPersistence;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import java.util.UUID;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -16,8 +18,11 @@ class OrderServiceImpl implements OrderService {
 
     @Override
     public void saveOrder(Order order) {
-        log.info("Getting order from Kafka " + order);
         orderPersistence.saveOrder(order);
-        log.info("End saving process " + order);
+    }
+
+    @Override
+    public Order getOrder(UUID id) {
+        return orderPersistence.getOrder(id);
     }
 }
