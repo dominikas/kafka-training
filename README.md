@@ -34,6 +34,8 @@ mvn clean package
 2. Run application using using configuration stored in .run/KafkaConsumerApplication.run.xml
 
 # todo
+* integration tests
+* arch tests
 * service discovery
 * authentication and authorization
 * webflux
