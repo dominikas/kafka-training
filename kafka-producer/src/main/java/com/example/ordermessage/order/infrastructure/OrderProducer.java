@@ -14,9 +14,9 @@ import org.springframework.stereotype.Component;
 class OrderProducer implements OrderService {
 
     @Value("${kafka.topic-name}")
-    private String orderTopicName;
+    private final String orderTopicName;
 
-    private final KafkaTemplate kafkaTemplate;
+    private final KafkaTemplate<String, OrderEvent> kafkaTemplate;
 
     @Override
     public void sendOrder(Order order) {
