@@ -13,8 +13,8 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 class OrderProducer implements OrderService {
 
-    @Value("${kafka.topic-name}")
-    private final String orderTopicName;
+    @Value("${spring.kafka.template.default-topic}")
+    private String orderTopicName;
 
     private final KafkaTemplate<String, OrderEvent> kafkaTemplate;
 

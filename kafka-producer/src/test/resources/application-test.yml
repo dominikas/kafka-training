@@ -8,9 +8,9 @@ spring:
   consumer:
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+  template:
+    default-topic: "order_topic"
 
-kafka:
-  topic-name: "order_topic-test"
 
 server:
   port: 8080

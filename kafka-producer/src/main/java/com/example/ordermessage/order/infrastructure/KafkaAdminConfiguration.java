@@ -16,13 +16,13 @@ public class KafkaAdminConfiguration {
     @Value("${spring.kafka.bootstrap-servers}")
     private String bootstrapServersAddress;
 
-    @Value("${kafka.order.topic.name}")
+    @Value("${kafka.topic-name}")
     private String orderTopicName;
 
-    @Value("${kafka.order.topic.partition.number}")
+    @Value("${kafka.order.topic.partition-number}")
     private String orderTopicPartitionNumber;
 
-    @Value("${kafka.order.topic.replication.factor}")
+    @Value("${kafka.order.topic.replication-factor}")
     private String orderTopicReplicationFactor;
 
     @Bean
