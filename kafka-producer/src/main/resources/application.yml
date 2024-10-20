@@ -6,9 +6,8 @@ spring:
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: com.example.ordermessage.order.infrastructure.OrderEventSerializer
-
-kafka:
-  topic-name: "order_topic"
+    template:
+      default-topic: "order_topic"
 
 server:
   port: 8080
