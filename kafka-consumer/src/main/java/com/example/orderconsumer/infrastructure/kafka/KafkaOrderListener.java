@@ -1,6 +1,7 @@
 package com.example.orderconsumer.infrastructure.kafka;
 
 import com.example.orderconsumer.domain.Order;
+import com.example.orderconsumer.infrastructure.persistence.OrderMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -14,12 +15,13 @@ import org.springframework.stereotype.Component;
 class KafkaOrderListener {
 
     private final OrderServiceImpl orderService;
+    private final OrderMapper mapper;
 
     @KafkaListener(topicPartitions = @TopicPartition(topic = "${kafka.topic-name}", partitions = {"0"}))
     public void consumeOrder(@Payload OrderDto message) {
         log.info("Message received {}", message);
-        Order order = OrderMessageMapper.toDomain(message);
+        Order order = mapper.toDomain(message);
         orderService.saveOrder(order);
-        log.info("Message processed {}", message);
+        log.info("Message processed");
     }
 }

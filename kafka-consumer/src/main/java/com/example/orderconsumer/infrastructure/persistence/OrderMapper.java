@@ -12,4 +12,6 @@ public interface OrderMapper {
     OrderDto toDto(Order order);
 
     Order toDomain(OrderEntity order);
+
+    Order toDomain(com.example.orderconsumer.infrastructure.kafka.OrderDto orderDto);
 }

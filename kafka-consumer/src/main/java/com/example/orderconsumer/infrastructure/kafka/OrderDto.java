@@ -1,5 +1,5 @@
 package com.example.orderconsumer.infrastructure.kafka;
 
-record OrderDto(String item,
-                Integer count) {
+public record OrderDto(String item,
+                Integer number) {
 }
