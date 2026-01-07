@@ -1,11 +1,11 @@
 package com.example.orderconsumer.infrastructure.kafka;
 
 import com.example.orderconsumer.domain.Order;
+import com.example.orderconsumer.domain.OrderService;
 import com.example.orderconsumer.infrastructure.persistence.OrderMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.kafka.annotation.TopicPartition;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
 
@@ -14,10 +14,10 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 class KafkaOrderListener {
 
-    private final OrderServiceImpl orderService;
+    private final OrderService orderService;
     private final OrderMapper mapper;
 
-    @KafkaListener(topicPartitions = @TopicPartition(topic = "${kafka.topic-name}", partitions = {"0"}))
+    @KafkaListener(topics = "${spring.kafka.topic-name}", groupId = "${spring.kafka.consumer.group-id}")
     public void consumeOrder(@Payload OrderDto message) {
         log.info("Message received {}", message);
         Order order = mapper.toDomain(message);

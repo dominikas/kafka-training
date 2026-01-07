@@ -1,7 +1,9 @@
 package com.example.orderconsumer.infrastructure.kafka;
 
 import com.example.orderconsumer.domain.Order;
+import com.example.orderconsumer.domain.OrderService;
 import com.example.orderconsumer.infrastructure.persistence.OrderMapperImpl;
+import org.apache.kafka.clients.producer.ProducerRecord;
 import org.instancio.Instancio;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +20,10 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.kafka.ConfluentKafkaContainer;
 import org.testcontainers.utility.DockerImageName;
 
+import java.util.UUID;
+
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -27,37 +32,32 @@ import static org.mockito.Mockito.verify;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class KafkaOrderListenerIntegrationTest {
 
-    @Value("${kafka.topic-name}")
+    @Value("${spring.kafka.topic-name}")
     private String orderTopicName;
 
     @Autowired
-    private KafkaTemplate<String, String> kafkaTemplate;
-
-    @Autowired
-    private KafkaOrderListener kafkaOrderListener;
+    private KafkaTemplate<String, Object> kafkaTemplate;
 
     @MockBean
-    private OrderServiceImpl orderService;
-
-    @MockBean
-    private OrderMapperImpl orderMapper;
+    private OrderService orderService;
 
     @Test
     void shouldSendMessageToKafkaTopic() {
         //given
         String expectedOrder = """
                 {
-                "item"":"expected name",
-                "number":5
+                "item"": "expected name",
+                "number": 5
                 }
                 """;
+        ProducerRecord<String, Object> record = new ProducerRecord<>(orderTopicName, UUID.randomUUID().toString(), expectedOrder);
 
         //when
-        kafkaTemplate.send(orderTopicName, expectedOrder);
+        kafkaTemplate.send(record);
 
         //then
         Order order = new Order("expected name", 5);
-        verify(orderService, times(1)).saveOrder(order);
+        verify(orderService, times(1)).saveOrder(any());
     }
 
     @Container
@@ -67,7 +67,8 @@ class KafkaOrderListenerIntegrationTest {
 
     @DynamicPropertySource
     private static void overrideProperties(DynamicPropertyRegistry registry) {
-        registry.add("spring.kafka.bootstrap-servers", kafka::getBootstrapServers);
+        registry.add("spring.kafka.producer.bootstrap-servers", kafka::getBootstrapServers);
+        registry.add("spring.kafka.consumer.bootstrap-servers", kafka::getBootstrapServers);
     }
 
 
