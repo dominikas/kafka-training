@@ -2,18 +2,6 @@ version: "3.7"
 
 services:
 
-    # The zipkin process services the UI, and also exposes a POST endpoint that
-    # instrumentation can send trace data to.
-  zipkin:
-    image: ghcr.io/openzipkin/zipkin-slim:${TAG:-latest}
-    container_name: zipkin
-    # Environment settings are defined here https://github.com/openzipkin/zipkin/blob/master/zipkin-server/README.md#environment-variables
-    environment:
-      - STORAGE_TYPE=mem
-    ports:
-        # Port used for the Zipkin UI and HTTP Api
-      - 9411:9411
-
   zookeeper:
     image: wurstmeister/zookeeper
     container_name: zookeeper

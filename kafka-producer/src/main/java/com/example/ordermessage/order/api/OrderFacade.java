@@ -5,7 +5,9 @@ import com.example.ordermessage.order.domain.OrderService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,20 +22,22 @@ import org.springframework.web.client.RestTemplate;
 @RequiredArgsConstructor
 @Slf4j
 @Tag(name = "Producer order endpoint")
+@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 class OrderFacade {
 
-    private final OrderService orderService;
+    OrderService orderService;
 
-    private final RestTemplate restTemplate;
+    RestTemplate restTemplate;
 
     @GetMapping
-    public String hello(){
+    String hello() {
+        log.info("hello");
         return "Hello from producer app!";
     }
 
     @PostMapping
     @Operation(summary = "Post order")
-    public void order(@RequestBody @Valid OrderDto orderDto) {
+    void order(@RequestBody @Valid OrderDto orderDto) {
         log.info("Order came to the producer {}", orderDto);
         Order order = new Order(orderDto.getItem(), orderDto.getCount());
         restTemplate.getForEntity("http://localhost:8085/v1/orders", String.class);

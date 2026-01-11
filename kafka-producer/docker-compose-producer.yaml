@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  producer-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: spring-boot-app:latest
+    container_name: producer-app
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=local
+      - DD_SERVICE=kafka-producer-container
+      - DD_ENV=dev
+      - DD_VERSION=7.74.0
+      - DD_SITE=datadoghq.eu
+      - DD_API_KEY=c981d017d772ca84a7d6c56bdd349571
+      - DD_TRACE_SAMPLE_RATE=1
+      - DD_AGENT_HOST=host.docker.internal
+    labels:
+      - com.datadoghq.tags.service="producer-app"
+      - com.datadoghq.tags.env="dev"
+      - com.datadoghq.tags.version="0.0.1"
+    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8080/actuator/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+networks:
+  kafka-net:
+    driver: bridge
