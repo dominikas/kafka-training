@@ -1,3 +1,10 @@
 ### helloworld
-
 GET http://localhost:8080/v1/orders
+
+###
+POST http://localhost:8080/v1/orders
+
+{
+"item":"",
+"count":""
+}

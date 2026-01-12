@@ -15,7 +15,7 @@ services:
       - DD_ENV=dev
       - DD_VERSION=7.74.0
       - DD_SITE=datadoghq.eu
-      - DD_API_KEY=c981d017d772ca84a7d6c56bdd349571
+      - DD_API_KEY=***
       - DD_TRACE_SAMPLE_RATE=1
       - DD_AGENT_HOST=host.docker.internal
     labels:
@@ -29,6 +29,29 @@ services:
       timeout: 10s
       retries: 3
       start_period: 40s
+
+  zookeeper:
+    image: wurstmeister/zookeeper
+    container_name: zookeeper
+    ports:
+      - "2181:2181"
+    networks:
+      - kafka-net
+  kafka:
+    image: wurstmeister/kafka
+    container_name: kafka
+    ports:
+      - "9092:9092"
+      - "9093:9093"
+    environment:
+      KAFKA_ADVERTISED_LISTENERS: INSIDE://kafka:9092,OUTSIDE://localhost:9093
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INSIDE:PLAINTEXT,OUTSIDE:PLAINTEXT
+      KAFKA_LISTENERS: INSIDE://0.0.0.0:9092,OUTSIDE://0.0.0.0:9093
+      KAFKA_INTER_BROKER_LISTENER_NAME: INSIDE
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_CREATE_TOPICS: "order_topic:1:1"
+    networks:
+      - kafka-net
 
 networks:
   kafka-net:

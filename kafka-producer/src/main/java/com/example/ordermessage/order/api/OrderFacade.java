@@ -2,6 +2,7 @@ package com.example.ordermessage.order.api;
 
 import com.example.ordermessage.order.domain.Order;
 import com.example.ordermessage.order.domain.OrderService;
+import com.example.ordermessage.order.infrastructure.KafkaConsumerClient;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -15,7 +16,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
 
 @RestController
 @RequestMapping(path = "/v1/order", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -27,7 +27,7 @@ class OrderFacade {
 
     OrderService orderService;
 
-    RestTemplate restTemplate;
+    KafkaConsumerClient consumer;
 
     @GetMapping
     String hello() {
@@ -40,7 +40,7 @@ class OrderFacade {
     void order(@RequestBody @Valid OrderDto orderDto) {
         log.info("Order came to the producer {}", orderDto);
         Order order = new Order(orderDto.getItem(), orderDto.getCount());
-        restTemplate.getForEntity("http://localhost:8085/v1/orders", String.class);
+        //consumer.getOrders();
         orderService.sendOrder(order);
     }
 }
