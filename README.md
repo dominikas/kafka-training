@@ -39,3 +39,15 @@ mvn clean package
 * service discovery
 * authentication and authorization
 * webflux
+
+### datadog - locally
+
+-javaagent:"...\dd-java-agent.jar" -Ddd.profiling.enabled=true -Ddd.logs.injection=true -Ddd.service=my-app -Ddd.env=staging -Ddd.version=1.0 -Ddd.trace.sample.rate=1
+
+## Docker container
+### build image
+
+docker-compose -f docker-compose-consumer.yaml build consumer-app
+
+### run image
+docker-compose  -f docker-compose-consumer.yaml up consumer-app
